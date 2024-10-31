@@ -2,10 +2,29 @@
 **/.env
 **/__pycache__/
 
+# Virtual Environment
+venv/
+env/
 
+# Environment variables
+.env
 
-# Ignore all contents of the virtual environment directory
-.venv/*
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
 
 # Ignore all contents of the directory "work_dir"
 work_dir/*

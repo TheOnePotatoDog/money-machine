@@ -194,3 +194,24 @@ When writing own code, ALWAYS put print/log statements inside and at the end of 
     }
 }
 ~~~
+
+### stripe_payment_tool:
+Initialize and process payments using Stripe API.
+Required arguments: "api_key", "amount", "currency", "description"
+Optional arguments: "customer_id", "payment_method"
+**Example usage**:
+~~~json
+{
+    "thoughts": [
+        "Setting up payment processing...",
+        "Initializing Stripe payment..."
+    ],
+    "tool_name": "stripe_payment_tool",
+    "tool_args": {
+        "api_key": "{{STRIPE_API_KEY}}",
+        "amount": 1000,
+        "currency": "usd",
+        "description": "Product purchase"
+    }
+}
+~~~
