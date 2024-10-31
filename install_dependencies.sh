@@ -1,0 +1,1 @@
+pip install stripe python-dotenv requests 
