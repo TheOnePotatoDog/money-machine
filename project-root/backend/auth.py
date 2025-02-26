@@ -65,7 +65,7 @@ def register(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
     return {"id": new_user.id, "email": new_user.email}
 
 @router.post("/login")
-def login(login_ schemas.LoginInput, db: Session = Depends(get_db)):
+def login(login_data: schemas.LoginInput, db: Session = Depends(get_db)):
     """User login endpoint – returns JWT token and user info."""
     user = db.query(models.User).filter(models.User.email == login_data.email).first()
     if not user or not verify_password(login_data.password, user.hashed_password):
