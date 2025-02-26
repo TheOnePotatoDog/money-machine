@@ -1,0 +1,55 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Check out repository code
+      - uses: actions/checkout@v3
+
+      # Authenticate with Google Cloud (using a service account JSON key in secrets)
+      - name: Set up GCP credentials
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          export_default_credentials: true
+
+      # Fetch secrets from Doppler (stores them to a .env file in runner)
+      - name: Fetch Doppler secrets
+        uses: dopplerhq/cli-action@v1
+        with:
+          # DOPPLER_TOKEN should be added as a secret in the GitHub repo
+          token: ${{ secrets.DOPPLER_TOKEN }}
+          command: doppler secrets download --no-file --format env > secrets.env
+
+      # Build and push the backend container image to Google Container Registry (GCR)
+      - name: Build & Push Backend Image
+        run: |
+          gcloud builds submit ./backend --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/money-safety-backend:latest
+
+      # Build and push the frontend container image
+      - name: Build & Push Frontend Image
+        run: |
+          gcloud builds submit ./frontend --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/money-safety-frontend:latest
+
+      # Deploy the backend service to Cloud Run with environment variables from Doppler
+      - name: Deploy Backend to Cloud Run
+        env:
+          $(cat secrets.env)          # Load the Doppler secrets into environment
+        run: |
+          gcloud run deploy money-safety-backend \
+            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/money-safety-backend:latest \
+            --platform managed --region ${{ secrets.GCP_REGION }} --allow-unauthenticated \
+            --update-env-vars "DATABASE_URL=${DATABASE_URL},SECRET_KEY=${SECRET_KEY},STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY},STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET},OPENAI_API_KEY=${OPENAI_API_KEY},FRONTEND_URL=${FRONTEND_URL}"
+
+      # Deploy the frontend service to Cloud Run
+      - name: Deploy Frontend to Cloud Run
+        run: |
+          gcloud run deploy money-safety-frontend \
+            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/money-safety-frontend:latest \
+            --platform managed --region ${{ secrets.GCP_REGION }} --allow-unauthenticated
