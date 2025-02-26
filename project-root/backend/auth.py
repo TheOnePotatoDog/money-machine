@@ -50,7 +50,7 @@ def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_
     return user
 
 @router.post("/register", status_code=201)
-def register(user_ schemas.UserCreate, db: Session = Depends(get_db)):
+def register(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
     """User registration endpoint."""
     # Prevent duplicate accounts
     existing_user = db.query(models.User).filter(models.User.email == user_data.email).first()
