@@ -29,20 +29,20 @@ shared-library/
 
 ```bash
 # Install directly from GitHub
-pip install git+https://github.com/your-org/shared-library.git@v1.0.0
+pip install git+https://github.com/TheOnePotatoDog/sharedLibrary-.git@main
 ```
 
 Or add to your requirements.txt:
 
 ```
-ai-shared-lib @ git+https://github.com/your-org/shared-library.git@v1.0.0
+ai-shared-lib @ git+https://github.com/TheOnePotatoDog/sharedLibrary-.git@main
 ```
 
 ### For development
 
 ```bash
-git clone https://github.com/your-org/shared-library.git
-cd shared-library
+git clone https://github.com/TheOnePotatoDog/sharedLibrary-.git
+cd sharedLibrary-
 pip install -e .
 ```
 
@@ -61,7 +61,17 @@ prompt = get_system_prompt("money")
 
 ## Development
 
-See the CONTRIBUTING.md file for development guidelines.
+### Running Tests
+
+```bash
+pytest tests/
+```
+
+### Adding New Features
+
+1. Create a new module in the `ai_shared` package
+2. Add tests in the `tests` directory
+3. Update documentation in this README
 
 ## License
 
