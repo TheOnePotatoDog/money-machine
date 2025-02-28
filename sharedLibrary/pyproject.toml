@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-shared-lib"
+version = "0.1.0"
+description = "Shared library for AI Projects"
+readme = "README.md"
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi>=0.95.0",
+    "sqlalchemy>=2.0.0",
+    "pydantic>=2.0.0",
+    "python-jose[cryptography]>=3.3.0",
+    "passlib[bcrypt]>=1.7.4",
+    "python-multipart>=0.0.5",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/your-org/shared-library"
+"Bug Tracker" = "https://github.com/your-org/shared-library/issues"
+
+[tool.setuptools]
+packages = ["ai_shared"]
